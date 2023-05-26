@@ -1,4 +1,5 @@
 import express from 'express'
+import * as userService from './user/user.service';
 
 const router = express.Router();
 
@@ -6,8 +7,8 @@ const router = express.Router();
 router.get('/', (_, res) => res.send('API is up and running!'))
 
 // Login/Signup
-router.post('/login');
-router.post('/register');
+router.post('/login', userService.login);
+router.post('/register', userService.register);
 
 // Posts
 router.post('/post');

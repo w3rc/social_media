@@ -1,9 +1,12 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import routes from './routes';
 import consola from "consola";
 import { connectDatabase } from './config/database/mongodb_config';
+import dotenv from 'dotenv';
 
 const app = express();
+app.use(bodyParser.json());
 
 const { PORT = 4000, API_URL } = process.env
 
@@ -19,6 +22,7 @@ app.use((req, res, next) => {
 async function bootstrap() {
 
     try {
+        dotenv.config();
         await connectDatabase();
         app.use('/api/v1', routes);
 
