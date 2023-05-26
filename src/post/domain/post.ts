@@ -7,6 +7,6 @@ const postSchema = new Schema<IPost & Document>({
   author: { type: String, required: true },
 });
 
-const UserModel = mongoose.model<IPost & Document>("Post", postSchema);
+const postModel = mongoose.model<IPost & Document>("Post", postSchema);
 
-export default UserModel;
+export default postModel;

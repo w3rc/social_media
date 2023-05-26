@@ -1,12 +1,15 @@
 import mongoose, { Schema } from "mongoose";
-import { IPost } from "./comment.interface";
+import { IComment } from "./comment.interface";
 
-const postSchema = new Schema<IPost & Document>({
+const commentSchema = new Schema<IComment & Document>({
   title: { type: String, required: true },
   content: { type: String, required: true },
   author: { type: String, required: true },
+  parent: { type: String, required: true },
+  upvotes: { type: [String], default: [] },
+  downvotes: { type: [String], default: [] }
 });
 
-const UserModel = mongoose.model<IPost & Document>("Post", postSchema);
+const commentModel = mongoose.model<IComment & Document>("Comment", commentSchema);
 
-export default UserModel;
+export default commentModel;

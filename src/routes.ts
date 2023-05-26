@@ -1,5 +1,5 @@
 import express from "express";
-import * as userService from "./user/user.service";
+import * as userController from "./user/user.controller";
 
 const router = express.Router();
 
@@ -7,8 +7,8 @@ const router = express.Router();
 router.get("/", (_, res) => res.send("API is up and running!"));
 
 // Login/Signup
-router.post("/login", userService.login);
-router.post("/register", userService.register);
+router.post("/login", userController.login);
+router.post("/register", userController.register);
 
 // Posts
 router.post("/post");
