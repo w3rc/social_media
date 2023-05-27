@@ -7,18 +7,34 @@ import {
 } from "./post.service";
 
 export const createPost = async (req: Request, res: Response) => {
-  const createPostInput = new CreatePostInput(req.body.title, req.body.content);
-  const createdPost = await createPostService(
-    createPostInput,
-    extractSubClaim(req),
-  );
+  try {
+    const createPostInput = new CreatePostInput(req.body.title, req.body.content);
 
-  res.status(201).send(createdPost);
+    const { error } = createPostInput.validate();
+    if (error) {
+      return res
+        .status(400)
+        .json({ error: error.details.map((detail) => detail.message) });
+    }
+
+    const createdPost = await createPostService(
+      createPostInput,
+      extractSubClaim(req),
+    );
+
+    res.status(201).send(createdPost);
+  } catch (error) {
+    return res.status(400).send({ error });
+  }
 };
 
 export const getPostById = async (req: Request, res: Response) => {
-  const postId = req.params.id;
+  try {
+    const postId = req.params.id;
 
-  const post = await getPostByIdService(postId);
-  res.status(200).send(post);
+    const post = await getPostByIdService(postId);
+    res.status(200).send(post);
+  } catch (error) {
+    return res.status(400).send({ error });
+  }
 };

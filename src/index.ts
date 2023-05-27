@@ -1,8 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
 import routes from "./routes";
-import "../types/express.d.ts";
-
 import consola from "consola";
 import { connectDatabase } from "./config/database/mongodb_config";
 import dotenv from "dotenv";

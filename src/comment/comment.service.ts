@@ -8,6 +8,7 @@ export const createComment = async (
   post_id: string,
   author: string,
 ): Promise<IComment> => {
+
   const comment: IComment = {
     _id: new Types.ObjectId(),
     content: createCommentInput.content,
@@ -36,7 +37,7 @@ export const getCommentsByPost = async (postId: string) => {
         connectFromField: "_id",
         connectToField: "parent_id",
         as: "subcomments",
-        maxDepth: 0,
+        maxDepth: 99,
         depthField: "depth",
       },
     },

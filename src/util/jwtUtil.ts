@@ -2,7 +2,7 @@ import { Request } from "express";
 import jwt from "jsonwebtoken";
 
 export const getToken = (req: Request) =>
-  req.headers.authorization?.split("Beaer ")[1];
+  req.headers.authorization?.split("Bearer ")[1];
 
 export const extractSubClaim = (req: Request): string => {
   const token = getToken(req);

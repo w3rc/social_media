@@ -11,8 +11,8 @@ class CreateCommentInput {
 
   validate(): Joi.ValidationResult {
     const schema = Joi.object({
-      title: Joi.string().required().messages({
-        required: "Title is required.",
+      content: Joi.string().required().messages({
+        required: "Content is required.",
       }),
       parent_id: Joi.string(),
     });

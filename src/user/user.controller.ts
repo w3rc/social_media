@@ -11,7 +11,6 @@ export const register = async (req: Request, res: Response) => {
       req.body.password,
     );
     const { error } = registerUserInput.validate();
-
     if (error) {
       return res
         .status(400)
@@ -32,8 +31,8 @@ export const login = async (req: Request, res: Response) => {
       req.body.email,
       req.body.password,
     );
+    
     const { error } = loginUserInput.validate();
-
     if (error) {
       return res
         .status(400)

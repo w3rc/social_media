@@ -9,42 +9,67 @@ import {
 } from "./comment.service";
 
 export const createComment = async (req: Request, res: Response) => {
-  const createCommentInput: CreateCommentInput = new CreateCommentInput(
-    req.body.content,
-    req.body.parent_id,
-  );
-  const post_id = req.query.post_id;
-  if (!post_id) {
-    res.status(400).send("Invalid Post ID");
+  try {
+    const createCommentInput: CreateCommentInput = new CreateCommentInput(
+      req.body.content,
+      req.body.parent_id,
+    );
+
+    const { error } = createCommentInput.validate();
+    if (error) {
+      return res
+        .status(400)
+        .json({ error: error.details.map((detail) => detail.message) });
+    }
+
+
+    const post_id = req.query.post_id;
+    if (!post_id) {
+      res.status(400).send("Invalid Post ID");
+    }
+    const comment = await createCommentService(
+      createCommentInput,
+      post_id as string,
+      extractSubClaim(req),
+    );
+    res.status(201).send(comment);
+  } catch (error) {
+    return res.status(400).send({ error });
   }
-  const comment = await createCommentService(
-    createCommentInput,
-    post_id as string,
-    extractSubClaim(req),
-  );
-  res.status(201).send(comment);
 };
 
 export const getCommentsByPost = async (req: Request, res: Response) => {
-  const postId = req.params.id;
-  const comments = await getCommentsByPostService(postId);
-  res.status(200).send(comments);
+  try {
+    const postId = req.params.id;
+    const comments = await getCommentsByPostService(postId);
+    res.status(200).send(comments);
+  } catch (error) {
+    return res.status(400).send({ error });
+  }
 };
 
 export const upvoteComment = async (req: Request, res: Response) => {
-  const commentId = req.params.id;
-  if (await upvoteCommentService(commentId, extractSubClaim(req))) {
-    res.status(200).send(true);
-  } else {
-    res.status(500).send({ message: "Could not upvote comment" });
+  try {
+    const commentId = req.params.id;
+    if (await upvoteCommentService(commentId, extractSubClaim(req))) {
+      res.status(200).send(true);
+    } else {
+      res.status(500).send({ message: "Could not upvote comment" });
+    }
+  } catch (error) {
+    return res.status(400).send({ error });
   }
 };
 
 export const downvoteComment = async (req: Request, res: Response) => {
-  const commentId = req.params.id;
-  if (await downvoteCommentService(commentId, extractSubClaim(req))) {
-    res.status(200).send(true);
-  } else {
-    res.status(500).send({ message: "Could not downvote comment" });
+  try {
+    const commentId = req.params.id;
+    if (await downvoteCommentService(commentId, extractSubClaim(req))) {
+      res.status(200).send(true);
+    } else {
+      res.status(500).send({ message: "Could not downvote comment" });
+    }
+  } catch (error) {
+    return res.status(400).send({ error });
   }
 };
