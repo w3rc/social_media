@@ -6,9 +6,7 @@ import { Types } from "mongoose";
 import LoginUserInput from "./dto/loginUser.input";
 import RegisterUserInput from "./dto/registerUser.input";
 
-export const registerUser = async (
-  registerUserInput: RegisterUserInput,
-): Promise<string> => {
+export const registerUser = async (registerUserInput: RegisterUserInput): Promise<string> => {
   const user: IUser = {
     _id: new Types.ObjectId(),
     name: registerUserInput.name,
@@ -28,9 +26,7 @@ export const registerUser = async (
   return generateAccessToken(user);
 };
 
-export const loginUser = async (
-  loginUserInput: LoginUserInput,
-): Promise<string> => {
+export const loginUser = async (loginUserInput: LoginUserInput): Promise<string> => {
   let user: IUser = {
     email: loginUserInput.email,
     password: loginUserInput.password,
@@ -48,7 +44,7 @@ export const loginUser = async (
     };
   }
 
-  if (!checkIfPasswordMatches) {
+  if (!await checkIfPasswordMatches(user.password, userData.password)) {
     throw Error("Invalid Password");
   }
 
@@ -69,9 +65,8 @@ const generateAccessToken = (user: IUser) => {
   return jwt.sign({ name: user.name, email: user.email }, JWT_SECRET, {
     expiresIn: 86400,
     subject: user._id?.toString(),
-    issuer: `http://${process.env.API_URL ?? "localhost"}:${
-      process.env.PORT ?? 4000
-    }`,
+    issuer: `http://${process.env.API_URL ?? "localhost"}:${process.env.PORT ?? 4000
+      }`,
   });
 };
 
