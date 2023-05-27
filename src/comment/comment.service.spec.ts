@@ -14,8 +14,11 @@ jest.mock("./domain/comment");
 describe("Comment Service", () => {
   describe("createComment", () => {
     it("should create a new comment", async () => {
-      const createCommentInput: CreateCommentInput = new CreateCommentInput("Test comment","123");
-      
+      const createCommentInput: CreateCommentInput = new CreateCommentInput(
+        "Test comment",
+        "123",
+      );
+
       const post_id = "456";
       const author = "user123";
 
@@ -35,7 +38,7 @@ describe("Comment Service", () => {
       const createdComment = await createComment(
         createCommentInput,
         post_id,
-        author
+        author,
       );
 
       expect(createdComment).toEqual(expectedComment);
@@ -47,11 +50,29 @@ describe("Comment Service", () => {
       const postId = "123";
 
       const expectedComments: IComment[] = [
-        { _id: new Types.ObjectId(), content: "Test comment 1", post_id: postId, upvotes: [], downvotes: [], author:"johndoe", created_at: "2023-05-27T05:32:34.148Z" },
-        { _id: new Types.ObjectId(), content: "Test comment 2", post_id: postId, upvotes: [], downvotes: [], author:"janedoe", created_at: "2023-05-27T05:32:34.148Z" },
+        {
+          _id: new Types.ObjectId(),
+          content: "Test comment 1",
+          post_id: postId,
+          upvotes: [],
+          downvotes: [],
+          author: "johndoe",
+          created_at: "2023-05-27T05:32:34.148Z",
+        },
+        {
+          _id: new Types.ObjectId(),
+          content: "Test comment 2",
+          post_id: postId,
+          upvotes: [],
+          downvotes: [],
+          author: "janedoe",
+          created_at: "2023-05-27T05:32:34.148Z",
+        },
       ];
 
-      (commentModel.aggregate as jest.Mock).mockResolvedValueOnce(expectedComments);
+      (commentModel.aggregate as jest.Mock).mockResolvedValueOnce(
+        expectedComments,
+      );
 
       const comments = await getCommentsByPost(postId, false);
 

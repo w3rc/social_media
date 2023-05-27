@@ -22,7 +22,6 @@ export const createComment = async (req: Request, res: Response) => {
         .json({ error: error.details.map((detail) => detail.message) });
     }
 
-
     const post_id = req.query.post_id;
     if (!post_id) {
       res.status(400).send("Invalid Post ID");
@@ -42,8 +41,10 @@ export const getCommentsByPost = async (req: Request, res: Response) => {
   try {
     const postId = req.params.id;
     const shouldSortDescByVote = req.query.sortDescByVote as unknown as boolean;
-    console.log(shouldSortDescByVote)
-    const comments = await getCommentsByPostService(postId, shouldSortDescByVote);
+    const comments = await getCommentsByPostService(
+      postId,
+      shouldSortDescByVote,
+    );
     res.status(200).send(comments);
   } catch (error) {
     return res.status(400).send({ error });

@@ -7,21 +7,16 @@ import Joi from "joi";
  *     PostInput:
  *       type: object
  *       properties:
- *         name:
+ *         title:
  *           type: string
- *           default: John Doe
- *         email:
+ *           default: This is a post
+ *         content:
  *           type: string
  *           format: email
- *           default: johndoe@example.com
- *         password:
- *           type: string
- *           format: password
- *           default: hello1234
+ *           default: Test content
  *       required:
- *         - name
- *         - email
- *         - password
+ *         - title
+ *         - content
  */
 class CreatePostInput {
   title: string;

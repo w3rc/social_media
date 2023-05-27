@@ -8,7 +8,6 @@ export const createComment = async (
   post_id: string,
   author: string,
 ): Promise<IComment> => {
-
   const comment: IComment = {
     _id: new Types.ObjectId(),
     content: createCommentInput.content,
@@ -23,7 +22,10 @@ export const createComment = async (
   return await commentModel.create(comment);
 };
 
-export const getCommentsByPost = async (postId: string, shouldSortDescByVote: boolean) => {
+export const getCommentsByPost = async (
+  postId: string,
+  shouldSortDescByVote: boolean,
+) => {
   const comments: IComment[] = await commentModel.aggregate([
     {
       $match: {
@@ -45,7 +47,10 @@ export const getCommentsByPost = async (postId: string, shouldSortDescByVote: bo
   return createGetCommentsByPostOutput(comments, shouldSortDescByVote);
 };
 
-const createGetCommentsByPostOutput = (comments: IComment[], shouldSortDescByVote: boolean) => {
+const createGetCommentsByPostOutput = (
+  comments: IComment[],
+  shouldSortDescByVote: boolean,
+) => {
   const commentMap: Record<string, IComment> = {};
 
   comments.forEach((comment) => {
@@ -64,19 +69,15 @@ const createGetCommentsByPostOutput = (comments: IComment[], shouldSortDescByVot
   const mainComments = comments.filter((comment) => !comment.parent_id);
 
   if (shouldSortDescByVote) {
-
     const sortSubcomments = (comment: IComment) => {
-      comment.subcomments?.sort((a, b) =>
-        b.upvotes.length - a.upvotes.length
-      );
+      comment.subcomments?.sort((a, b) => b.upvotes.length - a.upvotes.length);
       comment.subcomments?.forEach(sortSubcomments);
     };
-    console.log(comments);
     mainComments.forEach(sortSubcomments);
   }
 
   return mainComments;
-}
+};
 
 export const upvoteComment = async (
   commentId: string,
@@ -84,7 +85,7 @@ export const upvoteComment = async (
 ): Promise<boolean> => {
   const comment = await commentModel.findByIdAndUpdate(
     commentId,
-    { $set: { $push: { upvotes: upvoter } } },
+    { $addToSet: { upvotes: upvoter } },
     { new: true },
   );
   if (comment?.upvotes.includes(upvoter)) {
@@ -99,7 +100,7 @@ export const downvoteComment = async (
 ): Promise<boolean> => {
   const comment = await commentModel.findByIdAndUpdate(
     commentId,
-    { $set: { $push: { downvotes: downvoter } } },
+    { $addToSet: { downvotes: downvoter } },
     { new: true },
   );
   if (comment?.downvotes.includes(downvoter)) {

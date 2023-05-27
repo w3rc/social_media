@@ -43,7 +43,11 @@ describe("Comment Controller", () => {
         post_id: "456",
       };
 
-      const createdComment = { id: "789", content: "Test comment", parent_id: "123" };
+      const createdComment = {
+        id: "789",
+        content: "Test comment",
+        parent_id: "123",
+      };
       (createCommentService as jest.Mock).mockResolvedValueOnce(createdComment);
       (extractSubClaim as jest.Mock).mockReturnValueOnce("userId123");
 
@@ -120,7 +124,9 @@ describe("Comment Controller", () => {
       await upvoteComment(req, res);
 
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.send).toHaveBeenCalledWith({ message: "Could not upvote comment" });
+      expect(res.send).toHaveBeenCalledWith({
+        message: "Could not upvote comment",
+      });
     });
   });
 
@@ -146,7 +152,9 @@ describe("Comment Controller", () => {
       await downvoteComment(req, res);
 
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.send).toHaveBeenCalledWith({ message: "Could not downvote comment" });
+      expect(res.send).toHaveBeenCalledWith({
+        message: "Could not downvote comment",
+      });
     });
   });
 });

@@ -8,7 +8,10 @@ import {
 
 export const createPost = async (req: Request, res: Response) => {
   try {
-    const createPostInput = new CreatePostInput(req.body.title, req.body.content);
+    const createPostInput = new CreatePostInput(
+      req.body.title,
+      req.body.content,
+    );
 
     const { error } = createPostInput.validate();
     if (error) {

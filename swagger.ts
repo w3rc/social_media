@@ -27,7 +27,7 @@ const swaggerDefinition = {
 
 const options = {
   swaggerDefinition,
-  apis: ['./src/routes.ts', './src/user/dto/*.input.ts', './src/post/dto/*.input.ts'],
+  apis: ['./src/routes.ts', './src/user/dto/*.input.ts', './src/post/dto/*.input.ts', './src/comment/dto/*.input.ts'],
 };
 
 const swaggerSpec = swaggerJSDoc(options);

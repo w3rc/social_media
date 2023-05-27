@@ -1,5 +1,22 @@
 import Joi from "joi";
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     CommentInput:
+ *       type: object
+ *       properties:
+ *         comment:
+ *           type: string
+ *           default: This is a comment
+ *         parent_id:
+ *           type: string
+ *           format: email
+ *           default: 647172d3ccee3046f8f12975
+ *       required:
+ *         - content
+ */
 class CreateCommentInput {
   content: string;
   parent_id: string;

@@ -9,7 +9,10 @@ jest.mock("./domain/post");
 describe("Post Service", () => {
   describe("createPost", () => {
     it("should create a new post", async () => {
-      const createPostInput: CreatePostInput = new CreatePostInput("Test Post", "This is a test post");
+      const createPostInput: CreatePostInput = new CreatePostInput(
+        "Test Post",
+        "This is a test post",
+      );
       const author = "user123";
 
       const expectedPost: IPost = {

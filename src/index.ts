@@ -4,8 +4,8 @@ import routes from "./routes";
 import consola from "consola";
 import { connectDatabase } from "./config/database/mongodb_config";
 import dotenv from "dotenv";
-import swaggerUi from 'swagger-ui-express';
-const swaggerSpec = require('../swagger');
+import swaggerUi from "swagger-ui-express";
+const swaggerSpec = require("../swagger");
 
 const app = express();
 app.use(bodyParser.json());
@@ -21,7 +21,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 async function bootstrap() {
   try {
