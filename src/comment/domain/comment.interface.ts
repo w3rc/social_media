@@ -8,5 +8,6 @@ export interface IComment {
   downvotes: Array<string>;
   content: string;
   author: string;
+  subcomments?: Array<IComment>;
   created_at: string;
 }

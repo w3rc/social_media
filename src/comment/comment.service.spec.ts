@@ -53,7 +53,7 @@ describe("Comment Service", () => {
 
       (commentModel.aggregate as jest.Mock).mockResolvedValueOnce(expectedComments);
 
-      const comments = await getCommentsByPost(postId);
+      const comments = await getCommentsByPost(postId, false);
 
       expect(comments).toEqual(expectedComments);
     });

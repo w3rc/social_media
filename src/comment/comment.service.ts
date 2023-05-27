@@ -23,8 +23,8 @@ export const createComment = async (
   return await commentModel.create(comment);
 };
 
-export const getCommentsByPost = async (postId: string) => {
-  return await commentModel.aggregate([
+export const getCommentsByPost = async (postId: string, shouldSortDescByVote: boolean) => {
+  const comments: IComment[] = await commentModel.aggregate([
     {
       $match: {
         post_id: postId,
@@ -37,17 +37,46 @@ export const getCommentsByPost = async (postId: string) => {
         connectFromField: "_id",
         connectToField: "parent_id",
         as: "subcomments",
-        maxDepth: 99,
+        maxDepth: 0,
         depthField: "depth",
       },
     },
-    {
-      $sort: {
-        created_at: -1,
-      },
-    },
   ]);
+  return createGetCommentsByPostOutput(comments, shouldSortDescByVote);
 };
+
+const createGetCommentsByPostOutput = (comments: IComment[], shouldSortDescByVote: boolean) => {
+  const commentMap: Record<string, IComment> = {};
+
+  comments.forEach((comment) => {
+    commentMap[comment._id.toString()] = comment;
+  });
+
+  comments.forEach((comment) => {
+    if (comment.parent_id && comment.parent_id in commentMap) {
+      const parentComment = commentMap[comment.parent_id];
+      if (!parentComment.subcomments) {
+        parentComment.subcomments = [];
+      }
+      parentComment.subcomments.push(comment);
+    }
+  });
+  const mainComments = comments.filter((comment) => !comment.parent_id);
+
+  if (shouldSortDescByVote) {
+
+    const sortSubcomments = (comment: IComment) => {
+      comment.subcomments?.sort((a, b) =>
+        b.upvotes.length - a.upvotes.length
+      );
+      comment.subcomments?.forEach(sortSubcomments);
+    };
+    console.log(comments);
+    mainComments.forEach(sortSubcomments);
+  }
+
+  return mainComments;
+}
 
 export const upvoteComment = async (
   commentId: string,
