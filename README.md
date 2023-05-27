@@ -22,7 +22,8 @@ To run the project locally, follow these steps:
 1. Clone the repository to your local machine.
 2. Open the terminal and navigate to the project directory.
 3. Run `yarn install` to install the project dependencies.
-4. Run `yarn start` to start the application. By default, the app will start at `http://localhost:4000`.
+4. In order to run a mongodb instance, run "docker compose up". This will spin up a docker container of mongo and the api will use that container for storing data. In case you have mongodb installed, you can skip this step.
+5. Run `yarn start` to start the application. By default, the app will start at `http://localhost:4000`.
    You can specify a different port if needed.
 5. Open Postman or Insomnia to execute the APIs.
 6. The unit tests can be executed by running `yarn test`
