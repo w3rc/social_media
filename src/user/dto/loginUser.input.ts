@@ -1,5 +1,24 @@
 import Joi from "joi";
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     LoginUserInput:
+ *       type: object
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *           default: johndoe@example.com
+ *         password:
+ *           type: string
+ *           format: password
+ *           default: hello1234
+ *       required:
+ *         - email
+ *         - password
+ */
 class LoginUserInput {
   email: string;
   password: string;
